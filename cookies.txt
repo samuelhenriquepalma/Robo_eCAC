@@ -1,0 +1,68 @@
+[
+{
+    "domain": ".sso.acesso.gov.br",
+    "expirationDate": 1751323671.616482,
+    "hostOnly": false,
+    "httpOnly": true,
+    "name": "Govbrid",
+    "path": "/",
+    "sameSite": "no_restriction",
+    "secure": true,
+    "session": false,
+    "storeId": "0",
+    "value": "dd1a0d07-8772-46d9-a4b9-c329422ee6ff",
+    "id": 1
+},
+{
+    "domain": ".sso.acesso.gov.br",
+    "hostOnly": false,
+    "httpOnly": true,
+    "name": "INGRESSCOOKIE",
+    "path": "/",
+    "sameSite": "no_restriction",
+    "secure": true,
+    "session": true,
+    "storeId": "0",
+    "value": "0d6ba3870b659c4b",
+    "id": 2
+},
+{
+    "domain": ".sso.acesso.gov.br",
+    "hostOnly": false,
+    "httpOnly": true,
+    "name": "Session_Gov_Br_Prod",
+    "path": "/",
+    "sameSite": "no_restriction",
+    "secure": true,
+    "session": true,
+    "storeId": "0",
+    "value": "GeImYavMeb815On15NMZf9ZMTWvrEprQUalhqHik.scp-64b776b6-8zqkv",
+    "id": 3
+},
+{
+    "domain": ".sso.acesso.gov.br",
+    "hostOnly": false,
+    "httpOnly": false,
+    "name": "TS01ecd73c",
+    "path": "/",
+    "sameSite": "unspecified",
+    "secure": false,
+    "session": true,
+    "storeId": "0",
+    "value": "01fef04d4ecdd833d57cfcfae292e8536d44c37823cf75e4952ca0bf315611416396a107b2f278ca46d7ff6d0ec0b63857faa2ab7d3a9fbfade67f819400c16ee67e1321a3afc72b398691f0fc3511aa2efe279d80abf2b664ecd4b81308ac141c67f7e357",
+    "id": 4
+},
+{
+    "domain": "sso.acesso.gov.br",
+    "hostOnly": true,
+    "httpOnly": false,
+    "name": "Third-Party-Cookie-Support-Test",
+    "path": "/",
+    "sameSite": "no_restriction",
+    "secure": true,
+    "session": true,
+    "storeId": "0",
+    "value": "true",
+    "id": 5
+}
+]

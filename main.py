@@ -1,5 +1,6 @@
 from user_interface import obterDadosDoUsuario, exibirMenu
 from browser import inicializarChrome
+from logger_config import logger
 
 if __name__ == "__main__":
     # json_cookies, cnpj = obterDadosDoUsuario()
@@ -9,16 +10,16 @@ if __name__ == "__main__":
 [
 {
     "domain": ".sso.acesso.gov.br",
-    "expirationDate": 1751323671.616482,
+    "expirationDate": 1753492051,
     "hostOnly": false,
-    "httpOnly": true,
+    "httpOnly": false,
     "name": "Govbrid",
     "path": "/",
     "sameSite": "no_restriction",
     "secure": true,
     "session": false,
     "storeId": "0",
-    "value": "dd1a0d07-8772-46d9-a4b9-c329422ee6ff",
+    "value": "be041e2e-eb0f-4bab-a722-906fc27346dc",
     "id": 1
 },
 {
@@ -31,7 +32,7 @@ if __name__ == "__main__":
     "secure": true,
     "session": true,
     "storeId": "0",
-    "value": "ee053434b6582505",
+    "value": "4f3cf45260304f9d",
     "id": 2
 },
 {
@@ -44,7 +45,7 @@ if __name__ == "__main__":
     "secure": true,
     "session": true,
     "storeId": "0",
-    "value": "Nr63WWFbXqpprRYLQUKeAmEijG2stlhOdyIoalhy.scp-7695d5b4dd-c4tvt",
+    "value": "EfErmCGTn1pggsg16mf8DHrKpy0glXVAHl7j4pzr.scp-7695d5b4dd-8rp8b",
     "id": 3
 },
 {
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     "secure": false,
     "session": true,
     "storeId": "0",
-    "value": "01fef04d4e2fb0d5138a1290411cecdc2b31309df33d2a0386c0aa51d4a41adf4606a7f52cf5dcf9d6096bcbaa17be21c235f55c47f022edaa749f01de638e4d85ca298e061f420475c8bd244c117e01b4fbfb23da16973a4faf9989267b223ace85348953",
+    "value": "01fef04d4e418d1d25af855a4f2f8e120ac43fe0c73b3113f7c10e20fb2d09e6384eaf138a79b0142c7f04435b385869f28ea56fcf593002e2ed5bf0d9601f34accc1a74cfcab863e878abff666c956c08f37d7dedf1777190f8c96e79d0324b7ac8df8b90",
     "id": 4
 },
 {
@@ -75,9 +76,10 @@ if __name__ == "__main__":
 }
 ]
 '''
-    cnpj = '33285255000105'
+    cnpj = '02129949000111'
 
+    #inicialização do browser.py
     vDrive = inicializarChrome(json_cookies, urlDownload, cnpj)
     
-    # Exibir a moldura com o navegador e botões
+    # inicialização do menu em user_interface
     exibirMenu(vDrive)

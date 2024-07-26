@@ -4,6 +4,8 @@ from actions import executar_acoes_sequenciais, verificar_paginas_e_baixar
 import json
 from tkinter import messagebox
 from selenium.webdriver.common.by import By
+from logger_config import logger
+from utils import gerar_intervalo_datas
 
 
 def obterDadosDoUsuario():
@@ -56,18 +58,45 @@ def obterDadosDoUsuario():
     return root.result
 
 def exibirMenu(vDrive):
+    logger.info('iniciando menu de ações...')
 
+    def iniciarDownload():
+        data_inicio = data_inicio_entry.get().strip()
+        data_fim = data_fim_entry.get().strip()
+        print(data_inicio)
+        print(data_fim)
 
-    def iniciarAcoes():
-        # Chama as ações sequenciais
+        if not data_inicio or not data_fim:
+            messagebox.showerror("Erro", "Por favor, preencha as datas de início e fim.")
+            return
+
+        intervalo_datas = gerar_intervalo_datas(data_inicio, data_fim)
         pasta_downloads = r"C:\path\to\downloads"  # Ajuste conforme necessário
-        executar_acoes_sequenciais(vDrive, pasta_downloads)
-        
-        # Executa o loop de verificação de páginas e download
-        # verificar_paginas_e_baixar(vDrive)
+
+        print(f'intervalor datas: {intervalo_datas}')
+        for data in intervalo_datas:
+            data_inicio, data_fim = data, data
+
+            # Preencher os campos de data no site
+            campo_data_inicio = vDrive.find_element(By.XPATH, '//input[@id="mes_ano_inicio"]')
+            campo_data_fim = vDrive.find_element(By.XPATH, '//*[@id="mes_ano_fim"]')
+            # Clicar no botão limpar
+            botao_limpar = vDrive.find_element(By.CSS_SELECTOR, 'button[data-testid="botao_limpar"]')
+            botao_limpar.click()
+            # Enviar Periodos
+            campo_data_inicio.send_keys(data_inicio)
+            campo_data_fim.send_keys(data_fim)
+
+            # Clicar no botão de busca
+            botao_buscar = vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-lista-pesquisa/fieldset/div[2]/button[1]')
+            botao_buscar.click()
+
+            # Executar ações sequenciais
+            executar_acoes_sequenciais(vDrive, pasta_downloads)
 
     def pararPrograma():
         if messagebox.askyesno("Confirmação", "Tem certeza que deseja parar o programa?"):
+            logger.debug('Finalizando a aplicação...')
             vDrive.quit()
             root.destroy()
 
@@ -75,14 +104,24 @@ def exibirMenu(vDrive):
     root.title("Navegador com Controle")
 
     # Frame para o navegador
-    navegador_frame = tk.Frame(root, height=600, width=800)
+    navegador_frame = tk.Frame(root, height=100, width=100)
     navegador_frame.pack(padx=10, pady=10)
 
     # Frame para os botões
     botoes_frame = tk.Frame(root)
     botoes_frame.pack(padx=10, pady=10)
 
-    iniciar_button = tk.Button(botoes_frame, text="Iniciar Download", command=iniciarAcoes)
+    data_inicio_label = tk.Label(botoes_frame, text="Data Início (MM/YYYY):")
+    data_inicio_label.pack(pady=(10, 0))
+    data_inicio_entry = tk.Entry(botoes_frame, width=20)
+    data_inicio_entry.pack(pady=(0, 10))
+
+    data_fim_label = tk.Label(botoes_frame, text="Data Fim (MM/YYYY):")
+    data_fim_label.pack(pady=(10, 0))
+    data_fim_entry = tk.Entry(botoes_frame, width=20)
+    data_fim_entry.pack(pady=(0, 10))
+
+    iniciar_button = tk.Button(botoes_frame, text="Iniciar Download", command=iniciarDownload)
     iniciar_button.pack(side="left", padx=10)
 
     parar_button = tk.Button(botoes_frame, text="Parar Programa", command=pararPrograma)

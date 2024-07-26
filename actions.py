@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 import os
 from selenium.webdriver.common.keys import Keys
+from logger_config import logger
 
 
 # Lista de XPaths para ações sequenciais
@@ -49,7 +50,7 @@ def executar_acoes_sequenciais(vDrive, pasta_downloads):
             try:
                 btn = vDrive.find_element(By.XPATH, xpath)  # Seleciona o evento
                 btn.click()
-                print('Abrindo o Evento')
+                logger.info('Abrindo o Evento...')
                 time.sleep(0.3)  # Espera aleatória entre as ações
                 
                 tentativas = 0
@@ -59,7 +60,7 @@ def executar_acoes_sequenciais(vDrive, pasta_downloads):
                     # Fazer o download do XML
                     btn_download = vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-formulario/app-reinf-versao-leiaute/form/app-reinf-botoes-formulario/div/div/button[2]')
                     btn_download.click()
-                    print(f'Tentando download, tentativa {tentativas + 1}')
+                    logger.info(f'Tentando download... tentativa: {tentativas + 1}')
                     
                     # Verifica se o arquivo foi baixado
                     if verificar_arquivo_download(pasta_downloads):
@@ -70,15 +71,15 @@ def executar_acoes_sequenciais(vDrive, pasta_downloads):
                     time.sleep(0.2)
 
                 if not download_sucesso:
-                    print('Erro: Não foi possível realizar o download após 3 tentativas.')
+                    logger.error('Erro: Não foi possível realizar o download após 3 tentativas.')
                     continue
                 
-                print('Download Concluido')
+                logger.info('Download Concluido!!!')
                 time.sleep(0.2)  # Espera aleatória entre as ações
 
                 btn_voltar = vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-formulario/app-reinf-versao-leiaute/form/app-reinf-botoes-formulario/div/div/button[1]')  # Volta à tabela de eventos
                 btn_voltar.click()
-                print('Retornando à tabela de eventos')
+                logger.info('Retornando à tabela de eventos...')
                 time.sleep(0.2)  # Espera aleatória entre as ações
 
                 # Clicar no botão "próxima página" até chegar na página atual
@@ -91,11 +92,11 @@ def executar_acoes_sequenciais(vDrive, pasta_downloads):
                     nextPage = vDrive.find_element(By.CSS_SELECTOR, 'li[class="pagination-next"] a:nth-child(1)')  # Vai para a próxima página
                     nextPage.click()
                     pagina_atual += 1  # Incrementa a página atual
-                    print('Próxima Página')
+                    logger.info('Próxima Página...')
                     time.sleep(0.3)  # Espera aleatória entre as ações
 
                 except NoSuchElementException:
-                    print("Não há mais eventos.")
+                    logger.info("Não há mais eventos.")
                     return
 
             
@@ -108,7 +109,7 @@ def verificar_paginas_e_baixar(vDrive):
             botao_proxima_pagina.click()
             time.sleep(random.uniform(1, 3))
         except Exception as e:
-            print(f"Erro ao verificar ou mudar de página: {e}")
+            logger.error(f"Erro ao verificar ou mudar de página: {e}")
             break
 
 def baixar_arquivos(vDrive):
@@ -118,4 +119,4 @@ def baixar_arquivos(vDrive):
             botao.click()
             time.sleep(random.uniform(1, 3))
         except Exception as e:
-            print(f"Erro ao baixar arquivo: {e}")
+            logger.error(f"Erro ao baixar arquivo: {e}")

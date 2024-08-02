@@ -38,7 +38,7 @@ def gerar_intervalo_datas(data_inicio, data_fim):
     fim = datetime.strptime(data_fim, "%m/%Y")
     intervalo = []
 
-    print(f'inicio: {inicio}, fim: {fim}')
+    #print(f'inicio: {inicio}, fim: {fim}')
 
     while inicio <= fim:
         intervalo.append(inicio.strftime("%m/%Y"))
@@ -48,7 +48,7 @@ def gerar_intervalo_datas(data_inicio, data_fim):
         else:
             inicio = inicio.replace(month=inicio.month + 1)
 
-    print(f'intervalo: {intervalo}')
+    #print(f'intervalo: {intervalo}')
 
     return intervalo
 

@@ -4,8 +4,10 @@ from actions import executar_acoes_sequenciais, verificar_paginas_e_baixar
 import json
 from tkinter import messagebox
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from logger_config import logger
 from utils import gerar_intervalo_datas
+
 
 
 def obterDadosDoUsuario():
@@ -63,8 +65,6 @@ def exibirMenu(vDrive):
     def iniciarDownload():
         data_inicio = data_inicio_entry.get().strip()
         data_fim = data_fim_entry.get().strip()
-        print(data_inicio)
-        print(data_fim)
 
         if not data_inicio or not data_fim:
             messagebox.showerror("Erro", "Por favor, preencha as datas de início e fim.")
@@ -73,7 +73,7 @@ def exibirMenu(vDrive):
         intervalo_datas = gerar_intervalo_datas(data_inicio, data_fim)
         pasta_downloads = r"C:\path\to\downloads"  # Ajuste conforme necessário
 
-        print(f'intervalor datas: {intervalo_datas}')
+        # print(f'intervalor datas: {intervalo_datas}')
         for data in intervalo_datas:
             data_inicio, data_fim = data, data
 
@@ -91,8 +91,17 @@ def exibirMenu(vDrive):
             botao_buscar = vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-lista-pesquisa/fieldset/div[2]/button[1]')
             botao_buscar.click()
 
-            # Executar ações sequenciais
-            executar_acoes_sequenciais(vDrive, pasta_downloads)
+            try:
+                vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-lista-pesquisa/fieldset[2]/div/table/tr[2]/td[7]/button[1]').click()  # Seleciona o evento para voltar a pagina 1
+                vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-formulario/app-reinf-versao-leiaute/form/app-reinf-botoes-formulario/div/div/button[1]').click()  # Volta à tabela de eventos para voltar a pagina 1
+                # Executar ações sequenciais
+                executar_acoes_sequenciais(vDrive, pasta_downloads)
+            except NoSuchElementException:
+                logger.info(f"Não foi encontrado evento em {data_inicio}.")
+                time.sleep(0.2)  # Espera entre as ações
+            else:
+                logger.info(f"Não há mais eventos em {data_inicio}.")
+
 
     def pararPrograma():
         if messagebox.askyesno("Confirmação", "Tem certeza que deseja parar o programa?"):

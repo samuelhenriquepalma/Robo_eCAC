@@ -96,7 +96,7 @@ def executar_acoes_sequenciais(vDrive, pasta_downloads):
                     time.sleep(0.3)  # Espera aleatória entre as ações
 
                 except NoSuchElementException:
-                    logger.info("Não há mais eventos.")
+                    logger.info("...")
                     return
 
             

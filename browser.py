@@ -1,10 +1,13 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import json
 import time
 import random
 from logger_config import logger
+
 
 def inicializarChrome(json_cookies, urlDownload, cnpj):
     logger.debug('Iniciando Aplicação...')
@@ -59,6 +62,31 @@ def inicializarChrome(json_cookies, urlDownload, cnpj):
     vDrive.find_element(By.XPATH, '//*[@id="formPJ"]/input[4]').click()
     time.sleep(2)
 
-    logger.debug('acessando EFD-Reinf')
+
+    logger.debug('Acessando EFD-Reinf')
     vDrive.get("https://www3.cav.receita.fazenda.gov.br/reinfweb/#/2020/lista")
+
+    try:
+        # Espera até que o menu principal esteja visível e clicável
+        menu_principal = WebDriverWait(vDrive, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "#nav > li:nth-child(2) > a"))
+        )
+        menu_principal.click()
+        logger.debug('Menu principal clicado')
+
+        # Espera até que o submenu esteja visível e clicável
+        submenu = WebDriverWait(vDrive, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "#nav > li:nth-child(2) > ul > li:nth-child(2) > a"))
+        )
+        submenu.click()
+        logger.debug('Submenu clicado')
+        # Clicar no botão de busca
+        botao_buscar = vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-lista-pesquisa/fieldset/div[2]/button[1]')
+        botao_buscar.click()
+        # Clicar no botão limpar
+        botao_limpar = vDrive.find_element(By.CSS_SELECTOR, 'button[data-testid="botao_limpar"]')
+        botao_limpar.click()
+    except Exception as e:
+        logger.error(f"Erro ao acessar o submenu: {e}")
+
     return vDrive

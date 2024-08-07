@@ -232,12 +232,14 @@ class App(customtkinter.CTk):
 
             try:
                 vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-lista-pesquisa/fieldset[2]/div/table/tr[2]/td[7]/button[1]').click()  # Seleciona o evento para voltar a pagina 1
+                time.sleep(1.5)  # Espera entre as ações
                 vDrive.find_element(By.XPATH, '/html/body/app-root/div/div[3]/app-evento2020-formulario/app-reinf-versao-leiaute/form/app-reinf-botoes-formulario/div/div/button[1]').click()  # Volta à tabela de eventos para voltar a pagina 1
+                time.sleep(1.5)  # Espera entre as ações
                 # Executar ações sequenciais
                 executar_acoes_sequenciais(vDrive, pasta_downloads)
             except NoSuchElementException:
-                logger.info(f"Não foi encontrado evento em {data_inicio}.")
-                time.sleep(0.2)  # Espera entre as ações
+                    logger.info(f"Não foi encontrado evento em {data_inicio}.")
+                    time.sleep(0.2)  # Espera entre as ações
             else:
                 logger.info(f"Não há mais eventos em {data_inicio}.")
 
